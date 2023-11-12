@@ -4,8 +4,13 @@ function successHook(){
 }
 
 function errorHook(){
-	echo "ERROR - $error_msg"
-	exit 2
+	echo "$status - [$error_id] $error_msg"
+	case $error_id in
+		UNAUTHORIZED)
+			exit 100
+			;;
+	esac
+	exit 1
 }
 
 function template(){
@@ -68,8 +73,8 @@ function send(){
 
 function main(){
 	local api_key=`cat $API_KEY`
-	local report_url="no"
-	local concat="no"
+	local report_url="https://localhost"
+	local concat="1"
 
 	send $@
 	exit 0
