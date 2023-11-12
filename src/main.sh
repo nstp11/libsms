@@ -1,10 +1,12 @@
 function successHook(){
 	echo "Success!"
+	/usr/bin/bash $SUCCESS_SCRIPT 2>/dev/random
 	exit 0
 }
 
 function errorHook(){
 	echo "$status - [$error_id] $error_msg"
+	/usr/bin/bash $ERROR_SCRIPT 2>/dev/random
 	case $error_id in
 		UNAUTHORIZED)
 			exit 100
