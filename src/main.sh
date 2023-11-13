@@ -89,15 +89,16 @@ function messages(){
 function send(){
         local messages=`messages $@`
 	local payload="{\"api_key\":\"$api_key\", \"report_url\":\"$report_url\", \"concat\":\"$concat\", \"messages\": $messages}"
-	if [ "$DEBUG" -ne "0" ]; then echo $payload | jq; fi
 	unset api_key
 	unset report_url
 	unset concat
 	unset messages
+ 	if [ "$DEBUG" -ne "0" ]; then echo $payload | jq; fi
 	local r=`curl -s --request POST \
 		-H 'Content-Type: application/json' \
 		-H 'Accept: application/json' \
 		-d "$payload" https://api.gateway360.com/api/3.0/sms/send`
+  	unset payload
 	local status=`echo $r | jq -r '.status'`
 	local error_id=`echo $r | jq -r '.error_id'`
 	local error_msg=`echo $r | jq -r '.error_msg'`
