@@ -7,9 +7,49 @@ function successHook(){
 function errorHook(){
 	echo "$status - [$error_id] $error_msg"
 	/usr/bin/bash $ERROR_SCRIPT 2>/dev/random
-	case $error_id in
-		UNAUTHORIZED)
-			exit 100
+	case "$error_id" in
+		"INVALID_CONTENT_TYPE")
+			exit 101
+			;;
+
+		"JSON_PARSE_ERROR")
+			exit 102
+			;;
+
+		"MISSING_PARAMS")
+			exit 103
+			;;
+
+		"BAD_PARAMS")
+			exit 104
+			;;
+
+		"UNAUTHORIZED")
+			exit 105
+			;;
+
+		"INVALID_SENDER")
+			exit 106
+			;;
+
+		"INVALID_DESTINATION")
+			exit 107
+			;;
+
+		"INVALID_TEXT")
+			exit 108
+			;;
+
+		"INVALID_DATETIME")
+			exit 109
+			;;
+
+		"NOT_ENOUGH_BALANCE")
+			exit 110
+			;;
+
+		"LIMIT_EXCEEDED")
+			exit 111
 			;;
 	esac
 	exit 1
@@ -35,7 +75,7 @@ function messages(){
 		local t=`echo $i | cut -d"," -f4`
 		local m=`template $d $c`
 		unset i
-		if [ $n -lt $# ]; then
+		if [ "$n" -lt "$#" ]; then
 			local messages="$messages{\"from\": \"$f\", \"to\": \"$t\", \"message\": \"$m\"},"
 		else
 			local messages="$messages{\"from\": \"$f\", \"to\": \"$t\", \"message\": \"$m\"}"
@@ -63,7 +103,7 @@ function send(){
 	local error_msg=`echo $r | jq -r '.error_msg'`
 	unset r
 	case "$status" in
-		ok)
+		"ok")
 			successHook
 			;;
 		*)
