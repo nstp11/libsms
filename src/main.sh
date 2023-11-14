@@ -68,7 +68,7 @@ function messages(){
 	local n=0
 	local messages="["
 	for i in $@; do
-		let local n=n+1
+		let n=n+1
 		local d=`echo $i | cut -d"," -f1`
 		local c=`echo $i | cut -d"," -f2`
 		local f=`echo $i | cut -d"," -f3`
