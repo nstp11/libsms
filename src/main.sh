@@ -1,12 +1,12 @@
 function successHook(){
 	echo "Success!"
-	/usr/bin/bash $SUCCESS_SCRIPT 2>/dev/random
+	[ -e $SUCCESS_SCRIPT ] && /usr/bin/bash $SUCCESS_SCRIPT 2>/dev/random
 	exit 0
 }
 
 function errorHook(){
 	echo "$status - [$error_id] $error_msg"
-	/usr/bin/bash $ERROR_SCRIPT 2>/dev/random
+ 	[ -e $ERROR_SCRIPT ] && /usr/bin/bash $ERROR_SCRIPT 2>/dev/random
 	case "$error_id" in
 		"INVALID_CONTENT_TYPE")
 			exit 101
